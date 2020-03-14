@@ -24,6 +24,7 @@ import java.util.Base64;
 
 import com.iabtcf.ByteBitVector;
 import com.iabtcf.FieldDefs;
+import com.iabtcf.exceptions.UnsupportedVersionException;
 
 class TCStringDecoder {
     static ByteBitVector vectorFromString(String base64UrlEncodedString) {
@@ -35,6 +36,10 @@ class TCStringDecoder {
         return new ByteBitVector(bytes);
     }
 
+    /**
+     * @throws UnsupportedVersionException
+     * @throws IllegalArgumentException if consentString is not in valid Base64 scheme
+     */
     public static TCString decode(String consentString) {
         String[] split = consentString.split("\\.");
         String base64UrlEncodedString = split[0];
@@ -56,7 +61,7 @@ class TCStringDecoder {
                     return TCStringV2.fromBitVector(bitVector);
                 }
             default:
-                throw new UnsupportedOperationException("Version " + version + "is unsupported yet");
+                throw new UnsupportedVersionException("Version " + version + "is unsupported yet");
         }
     }
 }
